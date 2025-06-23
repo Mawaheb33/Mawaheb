@@ -314,7 +314,30 @@ ALTER TABLE `tblpublicnotice`
 ALTER TABLE `tblstudent`
   MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
 COMMIT;
+-- جدول الحضور والغياب
+CREATE TABLE `attendance` (
+  `AttendanceID` int(10) NOT NULL AUTO_INCREMENT,
+  `StudentID` int(10) NOT NULL,
+  `AttendanceDate` date NOT NULL,
+  `Status` enum('Present','Absent') NOT NULL,
+  `Notes` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`AttendanceID`),
+  KEY `idx_student_attendance` (`StudentID`),
+  CONSTRAINT `fk_attendance_student` FOREIGN KEY (`StudentID`) REFERENCES `tblstudent`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+-- جدول المصروفات
+CREATE TABLE `fees` (
+  `FeeID` int(10) NOT NULL AUTO_INCREMENT,
+  `StudentID` int(10) NOT NULL,
+  `Amount` decimal(10,2) NOT NULL,
+  `PaymentDate` date NOT NULL,
+  `FeeType` varchar(100) DEFAULT NULL,
+  `Notes` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`FeeID`),
+  KEY `idx_student_fees` (`StudentID`),
+  CONSTRAINT `fk_fees_student` FOREIGN KEY (`StudentID`) REFERENCES `tblstudent`(`ID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
